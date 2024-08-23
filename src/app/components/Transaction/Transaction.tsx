@@ -58,13 +58,13 @@ export const Transaction: React.FC<TransactionProps> = ({ transaction }) => {
       />
       <Entry
         title="Timestamp"
-        value={transaction?.timestamp ?? undefined}
+        value={transaction?.blockTimestamp ?? undefined}
         tooltipId="tooltip-timestamp"
         tooltip="Timestamp of the transaction"
       />
       <Entry
         title="Block number"
-        value={transaction?.blockNumber ?? undefined}
+        value={transaction?.blockHeight ?? undefined}
         tooltipId="tooltip-block-number"
         tooltip="Block transaction is included in"
       />

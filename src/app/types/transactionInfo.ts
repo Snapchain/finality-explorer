@@ -1,7 +1,7 @@
 export type TransactionInfo = {
   txHash: string;
-  timestamp: string;
-  blockNumber: string;
+  blockTimestamp: string;
+  blockHeight: string;
   blockHash: string;
   status: FinalityStatus;
   babylonFinalized: boolean;
