@@ -37,16 +37,6 @@ const Home: React.FC<HomeProps> = () => {
 
   const {
     data: txInfo,
-    // = {
-    //   txHash:
-    //     "0x3abdfa3b184c1362ad046f578fa21896851cf5020c1bd8ee6839a136c17ebf26",
-    //   blockNumber: "95583",
-    //   blockHash:
-    //     "0x6eaaf89e37c4b71d90cf2645efef1b887c5e361149f9a9134bc4ab974631f612",
-    //   timestamp: "22 August 2024 at 13:44:08",
-    //   status: FinalityStatus.BTC_FINALIZED,
-    //   babylonFinalized: true,
-    // },
     isLoading: isLoadingTxInfo,
     error: txInfoError,
     isError: isTxInfoError,
