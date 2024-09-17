@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
 
 import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
@@ -16,12 +15,12 @@ import { useError } from "./context/Error/ErrorContext";
 import { usePrivacy } from "./context/Privacy/PrivacyContext";
 import { useTerms } from "./context/Terms/TermsContext";
 import { ErrorState } from "./types/errors";
+import { TransactionInfo } from "./types/transactionInfo";
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const {
     error,
@@ -34,6 +33,9 @@ const Home: React.FC<HomeProps> = () => {
   } = useError();
   const { isTermsOpen, closeTerms } = useTerms();
   const { isPrivacyOpen, closePrivacy } = usePrivacy();
+  const [refetchInterval, setRefetchInterval] = useState<number | undefined>(
+    undefined,
+  );
 
   const {
     data: txInfo,
@@ -41,19 +43,25 @@ const Home: React.FC<HomeProps> = () => {
     error: txInfoError,
     isError: isTxInfoError,
     refetch: refetchTxInfo,
-  } = useQuery({
+  } = useQuery<TransactionInfo>({
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
       const txInfo = await getTxFinalityStatus(searchTerm);
       return txInfo;
     },
-    refetchInterval: 60000, // 1 minute
+    refetchInterval: refetchInterval,
     // Should be enabled only when the wallet is connected
     enabled: !!searchTerm,
     retry: (failureCount, error) => {
       return !isErrorOpen && failureCount <= 3;
     },
   });
+
+  useEffect(() => {
+    setRefetchInterval(!txInfo || txInfo?.babylonFinalized ? undefined : 2000); // refetch every 2 secs if not yet babylon finalized
+  }, [txInfo]);
+
+  console.log({ txInfo, refetchInterval });
 
   useEffect(() => {
     handleError({
