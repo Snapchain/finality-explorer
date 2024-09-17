@@ -1,0 +1,15 @@
+services:
+  finality-explorer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://35.193.78.151:18080
+        - NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES=true
+    image: snapchain/finality-explorer:latest
+    ports:
+      - "13000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    restart: unless-stopped

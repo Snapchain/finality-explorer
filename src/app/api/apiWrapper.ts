@@ -22,6 +22,10 @@ export const apiWrapper = async (
 
   try {
     // destructure params in case of post request
+    console.log(
+      "process.env.NEXT_PUBLIC_API_URL",
+      process.env.NEXT_PUBLIC_API_URL,
+    );
     response = await handler(
       `${process.env.NEXT_PUBLIC_API_URL}${url}`,
       method === "POST"

@@ -13,12 +13,12 @@ COPY next.config.mjs .
 COPY tsconfig.json .
 COPY tailwind.config.ts .
 COPY postcss.config.js .
-
+COPY .env.example ./.env
+# Replace the variables in the .env file
 ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-
 ARG NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES
-ENV NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES=${NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES}
+RUN sed -i "s|NEXT_PUBLIC_API_URL=.*|NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}|g" .env
+RUN sed -i "s|NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES=.*|NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES=${NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES}|g" .env
 
 RUN npm run build
 
@@ -30,7 +30,6 @@ WORKDIR /app
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-USER nextjs
 
 COPY --from=builder /app/public ./public
 
@@ -39,8 +38,15 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy the .env file
+COPY --from=builder --chown=nextjs:nodejs /app/.env ./.env
+
+RUN chown -R nextjs:nodejs .
+
+USER nextjs
+
 # Uncomment the following line to disable telemetry at run time
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 CMD ["node", "server.js"]
 STOPSIGNAL SIGTERM
