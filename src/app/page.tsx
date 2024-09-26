@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
 
 import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
@@ -21,12 +20,10 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const {
     error,
     isErrorOpen,
-    showError,
     hideError,
     retryErrorAction,
     noCancel,
@@ -44,6 +41,10 @@ const Home: React.FC<HomeProps> = () => {
   } = useQuery({
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
+      if (!/^0x([A-Fa-f0-9]{64})$/.test(searchTerm)) {
+        console.log("Invalid EVM transaction hash");
+        return null;
+      }
       const txInfo = await getTxFinalityStatus(searchTerm);
       return txInfo;
     },
@@ -70,7 +71,7 @@ const Home: React.FC<HomeProps> = () => {
       <div className="container mx-auto flex justify-center p-6">
         <div className="container flex flex-col gap-6">
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          {txInfo || isLoadingTxInfo ? (
+          {txInfo && !isLoadingTxInfo ? (
             <Transaction transaction={txInfo} />
           ) : (
             <></>
