@@ -25,7 +25,6 @@ const Home: React.FC<HomeProps> = () => {
   const {
     error,
     isErrorOpen,
-    showError,
     hideError,
     retryErrorAction,
     noCancel,
@@ -46,6 +45,9 @@ const Home: React.FC<HomeProps> = () => {
   } = useQuery<TransactionInfo>({
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
+      if (!/^0x([A-Fa-f0-9]{64})$/.test(searchTerm)) {
+        return null;
+      }
       const txInfo = await getTxFinalityStatus(searchTerm);
       return txInfo;
     },
@@ -78,7 +80,7 @@ const Home: React.FC<HomeProps> = () => {
       <div className="container mx-auto flex justify-center p-6">
         <div className="container flex flex-col gap-6">
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          {txInfo || isLoadingTxInfo ? (
+          {txInfo && !isLoadingTxInfo ? (
             <Transaction transaction={txInfo} />
           ) : (
             <></>

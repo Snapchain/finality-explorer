@@ -5,8 +5,8 @@ import { apiWrapper } from "./apiWrapper";
 export const getTxFinalityStatus = async (
   txHash: string,
 ): Promise<TransactionInfo> => {
-  if (!txHash) {
-    throw new Error("No transaction hash provided");
+  if (!txHash || !/^0x([A-Fa-f0-9]{64})$/.test(txHash)) {
+    throw new Error("Invalid EVM transaction hash");
   }
 
   const response = await apiWrapper(
