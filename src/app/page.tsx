@@ -42,7 +42,6 @@ const Home: React.FC<HomeProps> = () => {
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
       if (!/^0x([A-Fa-f0-9]{64})$/.test(searchTerm)) {
-        console.log("Invalid EVM transaction hash");
         return null;
       }
       const txInfo = await getTxFinalityStatus(searchTerm);
