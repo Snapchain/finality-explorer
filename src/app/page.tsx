@@ -45,15 +45,11 @@ const Home: React.FC<HomeProps> = () => {
   } = useQuery<TransactionInfo>({
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
-      if (!/^0x([A-Fa-f0-9]{64})$/.test(searchTerm)) {
-        return undefined;
-      }
       const txInfo = await getTxFinalityStatus(searchTerm);
       return txInfo;
     },
     refetchInterval: refetchInterval,
-    // Should be enabled only when the wallet is connected
-    enabled: !!searchTerm,
+    enabled: !!searchTerm && /^0x([A-Fa-f0-9]{64})$/.test(searchTerm),
     retry: (failureCount, error) => {
       return !isErrorOpen && failureCount <= 3;
     },
