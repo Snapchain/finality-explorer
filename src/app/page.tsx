@@ -46,7 +46,7 @@ const Home: React.FC<HomeProps> = () => {
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
       if (!/^0x([A-Fa-f0-9]{64})$/.test(searchTerm)) {
-        return null;
+        return undefined;
       }
       const txInfo = await getTxFinalityStatus(searchTerm);
       return txInfo;
@@ -62,8 +62,6 @@ const Home: React.FC<HomeProps> = () => {
   useEffect(() => {
     setRefetchInterval(!txInfo || txInfo?.babylonFinalized ? undefined : 2000); // refetch every 2 secs if not yet babylon finalized
   }, [txInfo]);
-
-  console.log({ txInfo, refetchInterval });
 
   useEffect(() => {
     handleError({
