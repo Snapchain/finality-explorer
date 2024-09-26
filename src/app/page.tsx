@@ -45,15 +45,11 @@ const Home: React.FC<HomeProps> = () => {
   } = useQuery<TransactionInfo>({
     queryKey: ["transaction", searchTerm],
     queryFn: async () => {
-      if (!/^0x([A-Fa-f0-9]{64})$/.test(searchTerm)) {
-        return null;
-      }
       const txInfo = await getTxFinalityStatus(searchTerm);
       return txInfo;
     },
     refetchInterval: refetchInterval,
-    // Should be enabled only when the wallet is connected
-    enabled: !!searchTerm,
+    enabled: !!searchTerm && /^0x([A-Fa-f0-9]{64})$/.test(searchTerm),
     retry: (failureCount, error) => {
       return !isErrorOpen && failureCount <= 3;
     },
@@ -62,8 +58,6 @@ const Home: React.FC<HomeProps> = () => {
   useEffect(() => {
     setRefetchInterval(!txInfo || txInfo?.babylonFinalized ? undefined : 2000); // refetch every 2 secs if not yet babylon finalized
   }, [txInfo]);
-
-  console.log({ txInfo, refetchInterval });
 
   useEffect(() => {
     handleError({
