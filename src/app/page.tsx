@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import { getLatestBlockInfo } from "./api/getLatestBlockInfo";
 import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
@@ -10,6 +11,7 @@ import { ErrorModal } from "./components/Modals/ErrorModal";
 import { PrivacyModal } from "./components/Modals/Privacy/PrivacyModal";
 import { TermsModal } from "./components/Modals/Terms/TermsModal";
 import { SearchBar } from "./components/SearchBar/SearchBar";
+import { Stats } from "./components/Stats/Stats";
 import { Transaction } from "./components/Transaction/Transaction";
 import { useError } from "./context/Error/ErrorContext";
 import { usePrivacy } from "./context/Privacy/PrivacyContext";
@@ -36,6 +38,24 @@ const Home: React.FC<HomeProps> = () => {
     undefined,
   );
 
+  const {
+    data: latestBlockInfo,
+    isLoading: isLoadingLatestBlockInfo,
+    error: latestBlockInfoError,
+    isError: isLatestBlockInfoError,
+    refetch: refetchLatestBlockInfo,
+  } = useQuery({
+    queryKey: ["latestBlockInfo"],
+    queryFn: async () => {
+      const latestBlockInfo = await getLatestBlockInfo();
+      return latestBlockInfo;
+    },
+    refetchInterval: 10000, // 10 seconds
+    // Should be enabled only when the wallet is connected
+    retry: (failureCount, error) => {
+      return !isErrorOpen && failureCount <= 3;
+    },
+  });
   const {
     data: txInfo,
     isLoading: isLoadingTxInfo,
@@ -66,13 +86,28 @@ const Home: React.FC<HomeProps> = () => {
       errorState: ErrorState.SERVER_ERROR,
       refetchFunction: refetchTxInfo,
     });
-  }, [isTxInfoError, txInfoError, refetchTxInfo, handleError]);
+    handleError({
+      error: latestBlockInfoError,
+      hasError: isLatestBlockInfoError,
+      errorState: ErrorState.SERVER_ERROR,
+      refetchFunction: refetchLatestBlockInfo,
+    });
+  }, [
+    isTxInfoError,
+    txInfoError,
+    refetchTxInfo,
+    handleError,
+    isLatestBlockInfoError,
+    latestBlockInfoError,
+    refetchLatestBlockInfo,
+  ]);
 
   return (
     <main className={`relative h-full min-h-svh w-full main-app-background`}>
       <Header />
       <div className="container mx-auto flex justify-center p-6">
         <div className="container flex flex-col gap-6">
+          <Stats latestBlockInfo={latestBlockInfo} />
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           {txInfo && !isLoadingTxInfo ? (
             <Transaction transaction={txInfo} />
