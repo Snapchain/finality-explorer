@@ -5,7 +5,7 @@
 @import url("styles/terms-privacy.css");
 
 :root {
-  --primary: #ff7c2a;
+  --primary: #84d019;
   --secondary: "#0DB7BF";
 }
 
@@ -68,7 +68,7 @@ input[type="number"] {
 /* tabs selection */
 .tab.tab-active:not(.tab-disabled):not([disabled]),
 .tab:is(input:checked) {
-  border-color: #ff7c2a;
+  border-color: #84d019;
 }
 
 .divider:after,

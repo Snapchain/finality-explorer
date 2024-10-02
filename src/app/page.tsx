@@ -40,7 +40,6 @@ const Home: React.FC<HomeProps> = () => {
 
   const {
     data: latestBlockInfo,
-    isLoading: isLoadingLatestBlockInfo,
     error: latestBlockInfoError,
     isError: isLatestBlockInfoError,
     refetch: refetchLatestBlockInfo,
