@@ -8,9 +8,13 @@ import { LoadingSmall } from "../Loading/Loading";
 
 interface TransactionProps {
   transaction: TransactionInfo | undefined;
+  isLoading: boolean;
 }
 
-export const Transaction: React.FC<TransactionProps> = ({ transaction }) => {
+export const Transaction: React.FC<TransactionProps> = ({
+  transaction,
+  isLoading,
+}) => {
   const status = (tx: TransactionInfo) => {
     switch (tx.status) {
       case "pending":
@@ -27,6 +31,16 @@ export const Transaction: React.FC<TransactionProps> = ({ transaction }) => {
         return "Unknown";
     }
   };
+
+  if (!transaction && !isLoading) {
+    return (
+      <div className="card flex flex-col gap-6 lg:gap-4 bg-base-300 p-6 shadow-sm items-start overflow-hidden">
+        <p className="dark:text-neutral-content text-sm">
+          Transaction not found.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="card flex flex-col gap-6 lg:gap-4 bg-base-300 p-6 shadow-sm items-start overflow-hidden">

@@ -108,8 +108,8 @@ const Home: React.FC<HomeProps> = () => {
         <div className="container flex flex-col gap-6">
           <Stats latestBlockInfo={latestBlockInfo} />
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          {txInfo && !isLoadingTxInfo ? (
-            <Transaction transaction={txInfo} />
+          {!!searchTerm ? (
+            <Transaction transaction={txInfo} isLoading={isLoadingTxInfo} />
           ) : (
             <></>
           )}
