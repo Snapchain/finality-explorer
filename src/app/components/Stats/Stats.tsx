@@ -3,38 +3,38 @@ import { Fragment } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { Tooltip } from "react-tooltip";
 
-import { LatestBlockInfo } from "@/app/types/blockInfo";
+import { ChainSyncStatus } from "@/app/types/chainSyncStatus";
 
 import blockIcon from "./icons/block.svg";
 
 interface StatsProps {
-  latestBlockInfo: LatestBlockInfo | undefined;
+  chainSyncStatus: ChainSyncStatus | undefined;
 }
 
-export const Stats: React.FC<StatsProps> = ({ latestBlockInfo }) => {
+export const Stats: React.FC<StatsProps> = ({ chainSyncStatus }) => {
   const sections = [
     [
       {
         title: "Latest",
-        value: latestBlockInfo?.latestBlockHeight,
+        value: chainSyncStatus?.latestBlockHeight,
         icon: blockIcon,
         tooltip: "Latest L2 block number",
       },
       {
         title: "ETH Finalized",
-        value: latestBlockInfo?.latestEthFinalizedBlockHeight,
+        value: chainSyncStatus?.latestEthFinalizedBlockHeight,
         icon: blockIcon,
         tooltip: "Latest ETH finalized L2 block number",
       },
       {
         title: "Earliest BTC Finalized",
-        value: latestBlockInfo?.earliestBtcFinalizedBlockHeight,
+        value: chainSyncStatus?.earliestBtcFinalizedBlockHeight,
         icon: blockIcon,
         tooltip: "Earliest consecutively BTC finalized L2 block number",
       },
       {
         title: "Latest BTC Finalized",
-        value: latestBlockInfo?.latestBtcFinalizedBlockHeight,
+        value: chainSyncStatus?.latestBtcFinalizedBlockHeight,
         icon: blockIcon,
         tooltip: "Latest BTC finalized L2 block number",
       },
@@ -80,7 +80,7 @@ export const Stats: React.FC<StatsProps> = ({ latestBlockInfo }) => {
                 </div>
                 <div>
                   <p className="flex-1 text-right">
-                    {!!latestBlockInfo ? (
+                    {!!chainSyncStatus ? (
                       <strong>{subSection.value}</strong>
                     ) : (
                       <span className="loading loading-spinner text-primary" />

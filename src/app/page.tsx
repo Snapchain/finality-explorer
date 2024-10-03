@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { getLatestBlockInfo } from "./api/getLatestBlockInfo";
+import { getChainSyncStatus } from "./api/getChainSyncStatus";
 import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
@@ -39,15 +39,15 @@ const Home: React.FC<HomeProps> = () => {
   );
 
   const {
-    data: latestBlockInfo,
-    error: latestBlockInfoError,
-    isError: isLatestBlockInfoError,
-    refetch: refetchLatestBlockInfo,
+    data: chainSyncStatus,
+    error: chainSyncStatusError,
+    isError: isChainSyncStatusError,
+    refetch: refetchChainSyncStatus,
   } = useQuery({
-    queryKey: ["latestBlockInfo"],
+    queryKey: ["chainSyncStatus"],
     queryFn: async () => {
-      const latestBlockInfo = await getLatestBlockInfo();
-      return latestBlockInfo;
+      const chainSyncStatus = await getChainSyncStatus();
+      return chainSyncStatus;
     },
     refetchInterval: 10000, // 10 seconds
     // Should be enabled only when the wallet is connected
@@ -86,19 +86,19 @@ const Home: React.FC<HomeProps> = () => {
       refetchFunction: refetchTxInfo,
     });
     handleError({
-      error: latestBlockInfoError,
-      hasError: isLatestBlockInfoError,
+      error: chainSyncStatusError,
+      hasError: isChainSyncStatusError,
       errorState: ErrorState.SERVER_ERROR,
-      refetchFunction: refetchLatestBlockInfo,
+      refetchFunction: refetchChainSyncStatus,
     });
   }, [
     isTxInfoError,
     txInfoError,
     refetchTxInfo,
     handleError,
-    isLatestBlockInfoError,
-    latestBlockInfoError,
-    refetchLatestBlockInfo,
+    isChainSyncStatusError,
+    chainSyncStatusError,
+    refetchChainSyncStatus,
   ]);
 
   return (
@@ -106,7 +106,7 @@ const Home: React.FC<HomeProps> = () => {
       <Header />
       <div className="container mx-auto flex justify-center p-6">
         <div className="container flex flex-col gap-6">
-          <Stats latestBlockInfo={latestBlockInfo} />
+          <Stats chainSyncStatus={chainSyncStatus} />
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           {!!searchTerm ? (
             <Transaction transaction={txInfo} isLoading={isLoadingTxInfo} />
