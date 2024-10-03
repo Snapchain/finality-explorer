@@ -90,7 +90,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
         </button>
       </div>
       <div className="flex flex-col justify-center gap-4">
-        <h3 className="text-center font-bold text-error">{getErrorTitle()}</h3>
+        <h3 className="text-center font-bold">{getErrorTitle()}</h3>
         <div className="flex flex-col gap-3">
           <p className="text-center">{getErrorMessage()}</p>
         </div>
