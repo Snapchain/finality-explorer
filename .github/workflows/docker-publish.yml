@@ -7,7 +7,11 @@ name: Docker
 
 on:
   push:
-    branches: ["main"]
+    branches: [
+        "main",
+        # TODO: remove this before merging to main
+        "feat/add-docker-ci",
+      ]
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
 
