@@ -25,6 +25,7 @@ export const Header: React.FC<HeaderProps> = () => {
             />
           </div>
           <div className="flex items-center gap-4">
+            {/* This modal can be enabled in development to display the connected FG RPC address */}
             {/* <RPCModal /> */}
             <ThemeToggle />
           </div>
