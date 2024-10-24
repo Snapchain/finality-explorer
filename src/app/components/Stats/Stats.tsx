@@ -88,6 +88,7 @@ export const Stats: React.FC<StatsProps> = ({ chainSyncStatus }) => {
                   </p>
                 </div>
               </div>
+              {/* Add divider between sections */}
               {subIndex !== section.length - 1 && (
                 <div className="divider mx-0 my-2 md:divider-horizontal" />
               )}

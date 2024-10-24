@@ -50,11 +50,14 @@ const Home: React.FC<HomeProps> = () => {
       return chainSyncStatus;
     },
     refetchInterval: 10000, // 10 seconds
-    // Should be enabled only when the wallet is connected
+    // will try refetching for RETRY_COUNT times before giving up
+    // user can trigger a retry action in the error modal that pops up
     retry: (failureCount, error) => {
-      return !isErrorOpen && failureCount <= 3;
+      const RETRY_COUNT = 3;
+      return !isErrorOpen && failureCount <= RETRY_COUNT;
     },
   });
+
   const {
     data: txInfo,
     isLoading: isLoadingTxInfo,
@@ -69,13 +72,20 @@ const Home: React.FC<HomeProps> = () => {
     },
     refetchInterval: refetchInterval,
     enabled: !!searchTerm && /^0x([A-Fa-f0-9]{64})$/.test(searchTerm),
+    // will try refetching for RETRY_COUNT times before giving up
+    // user can trigger a retry action in the error modal that pops up
     retry: (failureCount, error) => {
-      return !isErrorOpen && failureCount <= 3;
+      const RETRY_COUNT = 3;
+      return !isErrorOpen && failureCount <= RETRY_COUNT;
     },
   });
 
+  // refetch every REFETCH_INTERVAL_IN_MS / 1000 seconds if not yet babylon finalized
   useEffect(() => {
-    setRefetchInterval(!txInfo || txInfo?.babylonFinalized ? undefined : 2000); // refetch every 2 secs if not yet babylon finalized
+    const REFETCH_INTERVAL_IN_MS = 2000;
+    setRefetchInterval(
+      !txInfo || txInfo?.babylonFinalized ? undefined : REFETCH_INTERVAL_IN_MS,
+    );
   }, [txInfo]);
 
   useEffect(() => {
