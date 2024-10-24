@@ -12,29 +12,30 @@ interface StatsProps {
 }
 
 export const Stats: React.FC<StatsProps> = ({ chainSyncStatus }) => {
+  console.log({ chainSyncStatus });
   const sections = [
     [
       {
         title: "Latest",
-        value: chainSyncStatus?.latestBlockHeight,
+        value: chainSyncStatus?.latest_block,
         icon: blockIcon,
         tooltip: "Latest L2 block number",
       },
       {
         title: "ETH Finalized",
-        value: chainSyncStatus?.latestEthFinalizedBlockHeight,
+        value: chainSyncStatus?.latest_eth_finalized_block,
         icon: blockIcon,
         tooltip: "Latest ETH finalized L2 block number",
       },
       {
         title: "Earliest BTC Finalized",
-        value: chainSyncStatus?.earliestBtcFinalizedBlockHeight,
+        value: chainSyncStatus?.earliest_btc_finalized_block,
         icon: blockIcon,
         tooltip: "Earliest consecutively BTC finalized L2 block number",
       },
       {
         title: "Latest BTC Finalized",
-        value: chainSyncStatus?.latestBtcFinalizedBlockHeight,
+        value: chainSyncStatus?.latest_btc_finalized_block,
         icon: blockIcon,
         tooltip: "Latest BTC finalized L2 block number",
       },

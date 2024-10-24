@@ -1,6 +1,6 @@
 export type ChainSyncStatus = {
-  latestBlockHeight: string;
-  earliestBtcFinalizedBlockHeight: string;
-  latestBtcFinalizedBlockHeight: string;
-  latestEthFinalizedBlockHeight: string;
+  latest_block: number;
+  earliest_btc_finalized_block: number;
+  latest_btc_finalized_block: number;
+  latest_eth_finalized_block: number;
 };
