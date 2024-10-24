@@ -12,7 +12,6 @@ interface StatsProps {
 }
 
 export const Stats: React.FC<StatsProps> = ({ chainSyncStatus }) => {
-  console.log({ chainSyncStatus });
   const sections = [
     [
       {
