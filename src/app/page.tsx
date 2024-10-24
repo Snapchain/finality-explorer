@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import { getChainSyncStatus } from "./api/getChainSyncStatus";
 import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
@@ -10,6 +11,7 @@ import { ErrorModal } from "./components/Modals/ErrorModal";
 import { PrivacyModal } from "./components/Modals/Privacy/PrivacyModal";
 import { TermsModal } from "./components/Modals/Terms/TermsModal";
 import { SearchBar } from "./components/SearchBar/SearchBar";
+import { Stats } from "./components/Stats/Stats";
 import { Transaction } from "./components/Transaction/Transaction";
 import { useError } from "./context/Error/ErrorContext";
 import { usePrivacy } from "./context/Privacy/PrivacyContext";
@@ -37,6 +39,26 @@ const Home: React.FC<HomeProps> = () => {
   );
 
   const {
+    data: chainSyncStatus,
+    error: chainSyncStatusError,
+    isError: isChainSyncStatusError,
+    refetch: refetchChainSyncStatus,
+  } = useQuery({
+    queryKey: ["chainSyncStatus"],
+    queryFn: async () => {
+      const chainSyncStatus = await getChainSyncStatus();
+      return chainSyncStatus;
+    },
+    refetchInterval: 10000, // 10 seconds
+    // will try refetching for RETRY_COUNT times before giving up
+    // user can trigger a retry action in the error modal that pops up
+    retry: (failureCount, error) => {
+      const RETRY_COUNT = 3;
+      return !isErrorOpen && failureCount <= RETRY_COUNT;
+    },
+  });
+
+  const {
     data: txInfo,
     isLoading: isLoadingTxInfo,
     error: txInfoError,
@@ -50,13 +72,20 @@ const Home: React.FC<HomeProps> = () => {
     },
     refetchInterval: refetchInterval,
     enabled: !!searchTerm && /^0x([A-Fa-f0-9]{64})$/.test(searchTerm),
+    // will try refetching for RETRY_COUNT times before giving up
+    // user can trigger a retry action in the error modal that pops up
     retry: (failureCount, error) => {
-      return !isErrorOpen && failureCount <= 3;
+      const RETRY_COUNT = 3;
+      return !isErrorOpen && failureCount <= RETRY_COUNT;
     },
   });
 
+  // refetch every REFETCH_INTERVAL_IN_MS / 1000 seconds if not yet babylon finalized
   useEffect(() => {
-    setRefetchInterval(!txInfo || txInfo?.babylonFinalized ? undefined : 2000); // refetch every 2 secs if not yet babylon finalized
+    const REFETCH_INTERVAL_IN_MS = 2000;
+    setRefetchInterval(
+      !txInfo || txInfo?.babylonFinalized ? undefined : REFETCH_INTERVAL_IN_MS,
+    );
   }, [txInfo]);
 
   useEffect(() => {
@@ -66,16 +95,31 @@ const Home: React.FC<HomeProps> = () => {
       errorState: ErrorState.SERVER_ERROR,
       refetchFunction: refetchTxInfo,
     });
-  }, [isTxInfoError, txInfoError, refetchTxInfo, handleError]);
+    handleError({
+      error: chainSyncStatusError,
+      hasError: isChainSyncStatusError,
+      errorState: ErrorState.SERVER_ERROR,
+      refetchFunction: refetchChainSyncStatus,
+    });
+  }, [
+    isTxInfoError,
+    txInfoError,
+    refetchTxInfo,
+    handleError,
+    isChainSyncStatusError,
+    chainSyncStatusError,
+    refetchChainSyncStatus,
+  ]);
 
   return (
     <main className={`relative h-full min-h-svh w-full main-app-background`}>
       <Header />
       <div className="container mx-auto flex justify-center p-6">
         <div className="container flex flex-col gap-6">
+          <Stats chainSyncStatus={chainSyncStatus} />
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          {txInfo && !isLoadingTxInfo ? (
-            <Transaction transaction={txInfo} />
+          {!!searchTerm ? (
+            <Transaction transaction={txInfo} isLoading={isLoadingTxInfo} />
           ) : (
             <></>
           )}
