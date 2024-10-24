@@ -3,7 +3,6 @@ import Image from "next/image";
 import { shouldDisplayTestingMsg } from "@/config";
 
 import { Logo } from "../Logo/Logo";
-import { RPCModal } from "../Modals/RPCModal";
 import { TestingInfo } from "../TestingInfo/TestingInfo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 
@@ -26,7 +25,8 @@ export const Header: React.FC<HeaderProps> = () => {
             />
           </div>
           <div className="flex items-center gap-4">
-            <RPCModal />
+            {/* This modal can be enabled in development to display the connected FG RPC address */}
+            {/* <RPCModal /> */}
             <ThemeToggle />
           </div>
         </div>
