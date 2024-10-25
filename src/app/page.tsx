@@ -8,14 +8,10 @@ import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { ErrorModal } from "./components/Modals/ErrorModal";
-import { PrivacyModal } from "./components/Modals/Privacy/PrivacyModal";
-import { TermsModal } from "./components/Modals/Terms/TermsModal";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { Stats } from "./components/Stats/Stats";
 import { Transaction } from "./components/Transaction/Transaction";
 import { useError } from "./context/Error/ErrorContext";
-import { usePrivacy } from "./context/Privacy/PrivacyContext";
-import { useTerms } from "./context/Terms/TermsContext";
 import { ErrorState } from "./types/errors";
 import { TransactionInfo } from "./types/transactionInfo";
 
@@ -32,8 +28,6 @@ const Home: React.FC<HomeProps> = () => {
     noCancel,
     handleError,
   } = useError();
-  const { isTermsOpen, closeTerms } = useTerms();
-  const { isPrivacyOpen, closePrivacy } = usePrivacy();
   const [refetchInterval, setRefetchInterval] = useState<number | undefined>(
     undefined,
   );
@@ -135,8 +129,6 @@ const Home: React.FC<HomeProps> = () => {
         onRetry={retryErrorAction}
         noCancel={noCancel}
       />
-      <TermsModal open={isTermsOpen} onClose={closeTerms} />
-      <PrivacyModal open={isPrivacyOpen} onClose={closePrivacy} />
     </main>
   );
 };
