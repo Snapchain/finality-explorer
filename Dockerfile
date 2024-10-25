@@ -16,7 +16,7 @@ COPY postcss.config.js .
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm run install
+RUN npm install
 
 EXPOSE 13000
 
