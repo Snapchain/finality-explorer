@@ -8,9 +8,39 @@ import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
+const title = "Tohma Devnet Bridge";
+const description = "Bridge assets to Tohma Devnet from Sepolia";
+const url = "https://tohma.bridge.snapcha.in";
+const imageUrl = "/logo-card.png";
+
 export const metadata: Metadata = {
-  title: "Snapchain - Finality Explorer",
-  description: "Snapchain Tohma devnet finality explorer",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url,
+    siteName: title,
+    images: [
+      {
+        url: imageUrl,
+        width: 2048,
+        height: 1170,
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [imageUrl],
+  },
+  other: {
+    "telegram:title": title,
+    "telegram:description": description,
+    "telegram:image": imageUrl,
+  },
 };
 
 export default function RootLayout({
@@ -20,32 +50,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta property="og:title" content="Snapchain - Finality Explorer" />
-      <meta
-        name="description"
-        content="Snapchain Tohma devnet finality explorer"
-        key="desc"
-      />
-      <meta
-        property="og:description"
-        content="Snapchain Tohma devnet finality explorer"
-      />
-      <meta property="og:image:type" content="image/png" />
-      <meta property="og:image:width" content="2048" />
-      <meta property="og:image:height" content="1170" />
-      <meta property="og:image" content={`/og.png`} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="Snapchain - Finality Explorer" />
-      <meta
-        name="twitter:description"
-        content="Snapchain Tohma devnet finality explorer"
-      />
-      <meta name="twitter:image" content={`/og.png`} />
-      <meta name="twitter:image:type" content="image/png" />
-      <meta name="twitter:image:width" content="2048" />
-      <meta name="twitter:image:height" content="1170" />
-      <body className={inter.className}>
+      <head>
+        <meta charSet="utf-8" />
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:url" content={url} />
+        <meta property="og:image" content={imageUrl} />
+        <meta name="description" content={description} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageUrl} />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="robots" content="index, follow" />
+        <meta name="supported-color-schemes" content="dark only" />
+      </head>
+      <body className={`${inter.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>
