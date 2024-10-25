@@ -9,9 +9,9 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 const title = "Tohma Finality Explorer";
-const description = "Finality explorer for SnapchainTohma devnet";
+const description = "Finality explorer for Snapchain Tohma devnet";
 const url = "https://tohma.finality-explorer.snapcha.in";
-const imageUrl = "/logo-card.png";
+const imageUrl = `${url}/logo-card.png`;
 
 export const metadata: Metadata = {
   title,
