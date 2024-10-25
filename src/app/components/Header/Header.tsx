@@ -1,9 +1,6 @@
 import Image from "next/image";
 
-import { shouldDisplayTestingMsg } from "@/config";
-
 import { Logo } from "../Logo/Logo";
-import { TestingInfo } from "../TestingInfo/TestingInfo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 
 interface HeaderProps {}
@@ -31,11 +28,6 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
         </div>
       </div>
-      {shouldDisplayTestingMsg() && (
-        <div className="container mx-auto flex w-full items-center p-6 pb-0">
-          <TestingInfo />
-        </div>
-      )}
     </nav>
   );
 };

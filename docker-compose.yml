@@ -5,13 +5,10 @@ services:
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_FINALITY_GADGET_API_URL=${NEXT_PUBLIC_FINALITY_GADGET_API_URL}
-        - NEXT_PUBLIC_DISPLAY_TESTING_MESSAGES=true
     image: snapchain/finality-explorer:latest
     ports:
       - "13000:3000"
     environment:
-      - NODE_ENV=production
-      - NEXT_TELEMETRY_DISABLED=1
       - NEXT_PUBLIC_FINALITY_GADGET_API_URL=${NEXT_PUBLIC_FINALITY_GADGET_API_URL}
     env_file:
       - .env
