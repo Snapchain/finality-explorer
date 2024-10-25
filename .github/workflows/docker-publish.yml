@@ -7,11 +7,7 @@ name: Docker
 
 on:
   push:
-    branches: [
-        "main",
-        # TODO: remove this after testing
-        "feat/clean-up-babylon-artifacts",
-      ]
+    branches: ["main"]
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
 
