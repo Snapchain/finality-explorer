@@ -3,16 +3,44 @@ import { Inter } from "next/font/google";
 import "react-responsive-modal/styles.css";
 import "react-tooltip/dist/react-tooltip.css";
 
-import { getNetworkAppUrl } from "@/config";
-
 import "./globals.css";
 import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
+const title = "Tohma Finality Explorer";
+const description = "Finality explorer for Snapchain Tohma devnet";
+const url = "https://tohma.finality-explorer.snapcha.in";
+const imageUrl = `${url}/logo-card.png`;
+
 export const metadata: Metadata = {
-  title: "Babylon - Staking Dashboard",
-  description: "BTC Staking Dashboard",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url,
+    siteName: title,
+    images: [
+      {
+        url: imageUrl,
+        width: 2048,
+        height: 1170,
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [imageUrl],
+  },
+  other: {
+    "telegram:title": title,
+    "telegram:description": description,
+    "telegram:image": imageUrl,
+  },
 };
 
 export default function RootLayout({
@@ -22,22 +50,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta property="og:title" content="Babylon - Staking Dashboard" />
-      <meta name="description" content="BTC Staking Dashboard" key="desc" />
-      <meta property="og:description" content="BTC Staking Dashboard" />
-      <meta property="og:image:type" content="image/png" />
-      <meta property="og:image:width" content="2048" />
-      <meta property="og:image:height" content="1170" />
-      <meta property="og:image" content={`${getNetworkAppUrl()}/og.png`} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="BTC Staking Dashboard" />
-      <meta name="twitter:description" content="BTC Staking Dashboard" />
-      <meta name="twitter:image" content={`${getNetworkAppUrl()}/og.png`} />
-      <meta name="twitter:image:type" content="image/png" />
-      <meta name="twitter:image:width" content="2048" />
-      <meta name="twitter:image:height" content="1170" />
-      <body className={inter.className}>
+      <head>
+        <meta charSet="utf-8" />
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:url" content={url} />
+        <meta property="og:image" content={imageUrl} />
+        <meta name="description" content={description} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageUrl} />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="robots" content="index, follow" />
+        <meta name="supported-color-schemes" content="dark only" />
+      </head>
+      <body className={`${inter.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

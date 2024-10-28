@@ -6,8 +6,26 @@ on:
       - "**"
 
 jobs:
-  lint_test:
-    uses: babylonlabs-io/.github/.github/workflows/reusable_node_lint_test.yml@v0.3.0
-    with:
-      run-build: true
-      run-unit-tests: true
+  build_lint_format:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run format
+        run: npm run format
+
+      - name: Run build
+        run: npm run build

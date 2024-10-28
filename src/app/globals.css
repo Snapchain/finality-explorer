@@ -78,13 +78,11 @@ input[type="number"] {
 }
 
 [data-theme="dark"] .main-app-background {
-  background: rgb(43, 43, 43) url("./assets/bg-pattern.svg") left top/auto
-    repeat;
+  background: rgb(43, 43, 43);
 }
 
 [data-theme="light"] .main-app-background {
-  background: rgb(236, 236, 236) url("./assets/bg-pattern.svg") left top/auto
-    repeat;
+  background: rgb(236, 236, 236);
 }
 
 [data-theme="dark"] .react-responsive-modal-modal {
