@@ -1,6 +1,6 @@
-# Babylon Finality Explorer
+# Finality Explorer
 
-A simple web application to allow users of OP Stack L2 chains to view the finality status of transactions.
+A simple web application to allow users of OP Stack L2 chains that use the Babylon Bitcoin Staking Finality Gadget to view the finality status of transactions.
 
 ## Develop
 

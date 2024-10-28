@@ -1,68 +1,50 @@
 import {
-  BsDiscord,
+  // BsDiscord,
   BsGithub,
-  BsLinkedin,
-  BsMedium,
-  BsTelegram,
 } from "react-icons/bs";
 import { FaXTwitter } from "react-icons/fa6";
 import { GoHome } from "react-icons/go";
-import { IoMdBook } from "react-icons/io";
-import { MdAlternateEmail, MdForum } from "react-icons/md";
+// import { IoMdBook } from "react-icons/io";
+import { MdAlternateEmail } from "react-icons/md";
 
 import { useTerms } from "@/app/context/Terms/TermsContext";
 
 const iconLinks = [
   {
     name: "Website",
-    url: "https://babylonlabs.io",
+    url: "https://www.snapchain.dev/",
     Icon: GoHome,
   },
   {
     name: "X",
-    url: "https://x.com/babylonlabs_io",
+    url: "https://twitter.com/snapchaindev",
     Icon: FaXTwitter,
   },
   {
     name: "GitHub",
-    url: "https://github.com/babylonlabs-io",
+    url: "https://github.com/Snapchain",
     Icon: BsGithub,
   },
-  {
-    name: "Telegram",
-    url: "https://t.me/babyloncommunity",
-    Icon: BsTelegram,
-  },
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/company/babylon-labs-official",
-    Icon: BsLinkedin,
-  },
-  {
-    name: "Medium",
-    url: "https://medium.com/babylonlabs-io",
-    Icon: BsMedium,
-  },
-  {
-    name: "Docs",
-    url: "https://docs.babylonlabs.io/",
-    Icon: IoMdBook,
-  },
-  {
-    name: "Forum",
-    url: "https://forum.babylonlabs.io/",
-    Icon: MdForum,
-  },
+  // {
+  //   name: "Docs",
+  //   url: "",
+  //   Icon: IoMdBook,
+  // },
+  // {
+  //   name: "Forum",
+  //   url: "",
+  //   Icon: MdForum,
+  // },
   {
     name: "Email",
-    url: "mailto:contact@babylonlabs.io",
+    url: "info@snapchain.dev",
     Icon: MdAlternateEmail,
   },
-  {
-    name: "Discord",
-    url: "https://discord.com/invite/babylonglobal",
-    Icon: BsDiscord,
-  },
+  // {
+  //   name: "Discord",
+  //   url: "",
+  //   Icon: BsDiscord,
+  // },
 ];
 
 interface FooterProps {}
