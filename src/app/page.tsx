@@ -1,17 +1,20 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 import { getChainSyncStatus } from "./api/getChainSyncStatus";
 import { getTxFinalityStatus } from "./api/getTxFinalityStatus";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
+import { LoadingSmall } from "./components/Loading/Loading";
 import { ErrorModal } from "./components/Modals/ErrorModal";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { Stats } from "./components/Stats/Stats";
 import { Transaction } from "./components/Transaction/Transaction";
 import { useError } from "./context/Error/ErrorContext";
+import { ChainSyncStatus } from "./types/chainSyncStatus";
 import { ErrorState } from "./types/errors";
 import { TransactionInfo } from "./types/transactionInfo";
 
@@ -108,17 +111,15 @@ const Home: React.FC<HomeProps> = () => {
   return (
     <main className={`relative h-full min-h-svh w-full main-app-background`}>
       <Header />
-      <div className="container mx-auto flex justify-center p-6">
-        <div className="container flex flex-col gap-6">
-          <Stats chainSyncStatus={chainSyncStatus} />
-          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          {!!searchTerm ? (
-            <Transaction transaction={txInfo} isLoading={isLoadingTxInfo} />
-          ) : (
-            <></>
-          )}
-        </div>
-      </div>
+      <Suspense fallback={<LoadingSmall text="Loading..." />}>
+        <Content
+          chainSyncStatus={chainSyncStatus}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          txInfo={txInfo}
+          isLoadingTxInfo={isLoadingTxInfo}
+        />
+      </Suspense>
       <Footer />
       <ErrorModal
         open={isErrorOpen}
@@ -130,6 +131,45 @@ const Home: React.FC<HomeProps> = () => {
         noCancel={noCancel}
       />
     </main>
+  );
+};
+
+interface ContentProps {
+  chainSyncStatus: ChainSyncStatus | undefined;
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  txInfo: TransactionInfo | undefined;
+  isLoadingTxInfo: boolean;
+}
+
+const Content: React.FC<ContentProps> = ({
+  chainSyncStatus,
+  searchTerm,
+  setSearchTerm,
+  txInfo,
+  isLoadingTxInfo,
+}) => {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const txHash = searchParams.get("txHash");
+    if (txHash) {
+      setSearchTerm(txHash);
+    }
+  }, [searchParams]);
+
+  return (
+    <div className="container mx-auto flex justify-center p-6">
+      <div className="container flex flex-col gap-6">
+        <Stats chainSyncStatus={chainSyncStatus} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        {!!searchTerm ? (
+          <Transaction transaction={txInfo} isLoading={isLoadingTxInfo} />
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
   );
 };
 
