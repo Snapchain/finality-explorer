@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { getChainSyncStatus } from "./api/getChainSyncStatus";
@@ -18,6 +19,7 @@ import { TransactionInfo } from "./types/transactionInfo";
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
 
   const {
@@ -73,6 +75,13 @@ const Home: React.FC<HomeProps> = () => {
       return !isErrorOpen && failureCount <= RETRY_COUNT;
     },
   });
+
+  useEffect(() => {
+    const txHash = searchParams.get("txHash");
+    if (txHash) {
+      setSearchTerm(txHash);
+    }
+  }, [searchParams]);
 
   // refetch every REFETCH_INTERVAL_IN_MS / 1000 seconds if not yet babylon finalized
   useEffect(() => {
