@@ -21,6 +21,12 @@ export const Stats: React.FC<StatsProps> = ({ chainSyncStatus }) => {
         tooltip: "Latest L2 block number",
       },
       {
+        title: "Latest BTC Finalized",
+        value: chainSyncStatus?.latest_btc_finalized_block,
+        icon: blockIcon,
+        tooltip: "Latest BTC finalized L2 block number",
+      },
+      {
         title: "ETH Finalized",
         value: chainSyncStatus?.latest_eth_finalized_block,
         icon: blockIcon,
@@ -31,12 +37,6 @@ export const Stats: React.FC<StatsProps> = ({ chainSyncStatus }) => {
         value: chainSyncStatus?.earliest_btc_finalized_block,
         icon: blockIcon,
         tooltip: "Earliest consecutively BTC finalized L2 block number",
-      },
-      {
-        title: "Latest BTC Finalized",
-        value: chainSyncStatus?.latest_btc_finalized_block,
-        icon: blockIcon,
-        tooltip: "Latest BTC finalized L2 block number",
       },
     ],
   ];
